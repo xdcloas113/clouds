@@ -36,6 +36,7 @@
     <modules>
         <module>loas-eureka</module>
         <module>loas-config</module>
+        <module>loas-gateway</module>
     </modules>
 
     <properties>
