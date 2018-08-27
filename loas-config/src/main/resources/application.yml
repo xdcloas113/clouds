@@ -1,0 +1,30 @@
+server:
+  port: ${port:8889}
+
+eureka:
+  client:
+    enabled: true
+    serviceUrl:
+      defaultZone: ${regist.center:http://localhost:8762/eureka}
+  instance:
+    prefer-ip-address: true
+
+spring:
+  profiles:
+    active: dev
+  cloud:
+    config:
+      profile: dev
+      server:
+        git:
+          uri: ${git.url:https://github.com/xdcloas113/cloud.git}
+          username: ${git.username:xdcloas113@163.com}
+#          password: ${git.password:}
+          default-label: ${git.label:master}
+          #timeout: 30000
+          searchPaths: config-repo
+
+logging:
+  level:
+    com.netflix.discovery: 'ON'
+    org.springframework.cloud: 'info'
