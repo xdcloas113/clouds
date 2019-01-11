@@ -27,6 +27,12 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- erueka加密-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-security</artifactId>
+        </dependency>
+
     </dependencies>
 
 

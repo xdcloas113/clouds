@@ -1,11 +1,17 @@
 server:
-  port: ${port:8001}
+  port: ${port:8888}
 
 eureka:
+  instance:
+    hostname: localhost
   client:
     enabled: true
+#Start Eureka服务注册中心也会将自己作为客户端来尝试注册它自己，所以我们需要禁用它的客户端注册行为。
+#    registerWithEureka: false
+#    fetchRegistry: false
+##end
     serviceUrl:
-      defaultZone: http://localhost:8000/eureka
+      defaultZone: ${regist.center:http://loas:loas@localhost:8761/eureka}
   instance:
     prefer-ip-address: true
 
@@ -13,17 +19,27 @@ eureka:
 spring:
   profiles:
     active: dev
+#    active: native
   cloud:
     config:
       profile: dev
       server:
         git:
+#          uri: ${xdcloas113@163.com:?@github.com/xdcloas113/clouds.git}
+          # ？ 需要真是密码
           uri: ${git.url:https://github.com/xdcloas113/clouds.git}
           username: ${git.username:xdcloas113@163.com}
-#          password: ${git.password:}
-          default-label: ${git.label:master}
-          #timeout: 30000
-          searchPaths: config-repo
+#          password: ${git.password:} #需要真实的密码
+#          default-label: ${git.label:master}
+#          timeout: 30000
+#          searchPaths: config-repo #文件所在的地址
+
+#        native:  #上面都注释掉
+#          searchLocations: config-repo #开启本地
+
+encrypt:
+    key: loas
+
 
 logging:
   level:

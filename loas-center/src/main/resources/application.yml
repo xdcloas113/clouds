@@ -1,5 +1,12 @@
+#开启密码模式
+spring:
+  security:
+    user:
+      name: loas
+      password: loas
+
 server:
-  port: 8000
+  port: 8761
 
 eureka:
   client:
