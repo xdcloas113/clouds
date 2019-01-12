@@ -1,6 +1,11 @@
 spring:
   application:
     name: config-server
+  security: #这里设置了。bootstrap里面要设置密码
+      user:
+        name: loas
+        password: loas
+
 
 #encrypt:
  # failOnError: false
