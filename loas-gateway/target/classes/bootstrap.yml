@@ -1,8 +1,6 @@
-
-
 spring:
   cloud:
     config:
-      uri: http://${config.uri:localhost}:${config.port:8888}
+      uri: http://${config.uri:localhost}:${config.port:9002}
       name: apiGateway
       profile: ${config.profile:dev}

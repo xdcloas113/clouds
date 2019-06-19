@@ -1,11 +1,11 @@
 server:
-  port: ${port:80}
+  port: ${port:9003}
 
 eureka:
   client:
     enabled: true
     serviceUrl:
-      defaultZone: ${regist.center:http://localhost:8762/eureka}
+      defaultZone: ${regist.center:http://localhost:9001/eureka}
   instance:
     prefer-ip-address: true
 

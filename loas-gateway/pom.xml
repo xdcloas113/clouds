@@ -43,33 +43,6 @@
                 <artifactId>spring-boot-starter-actuator</artifactId>
             </dependency>-->
 
-    <!--shiro+redis+spring包-->
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-redis</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>org.springframework.session</groupId>
-        <artifactId>spring-session-data-redis</artifactId>
-    </dependency>
-
-    <dependency>
-        <groupId>org.crazycake</groupId>
-        <artifactId>shiro-redis</artifactId>
-        <version>2.4.2.1-RELEASE</version>
-    </dependency>
-
-    <dependency>
-        <groupId>org.apache.shiro</groupId>
-        <artifactId>shiro-core</artifactId>
-        <version>1.4.0</version>
-    </dependency>
-
-    <dependency>
-        <groupId>org.apache.shiro</groupId>
-        <artifactId>shiro-spring</artifactId>
-        <version>1.4.0</version>
-    </dependency>
 
 
     <!--<dependency>-->

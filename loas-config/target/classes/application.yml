@@ -1,20 +1,20 @@
 server:
-  port: ${port:8888}
+  port: 9002
+
 
 eureka:
+  client:
+    enabled: true
+    serviceUrl:
+      defaultZone: http://loas:loas@localhost:9001/eureka/
   instance:
     hostname: abb
     prefer-ip-address: true
-    instance-id: ${spring.cloud.client.ip-Address}:${server.port}
-  client:
-    enabled: true
-#Start Eureka服务注册中心也会将自己作为客户端来尝试注册它自己，所以我们需要禁用它的客户端注册行为。
-#    registerWithEureka: false
-#    fetchRegistry: false
-##end
-    serviceUrl:
-      defaultZone: ${regist.center:http://loas:loas@localhost:8761/eureka}
-
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
+#    多久去拉取注册表，心跳
+    leaseRenewalIntervalInSeconds: 10
+#    等待心跳时间
+    leaseExpirationDurationInSeconds: 20
 
 # 读取git上面的config数据
 spring:

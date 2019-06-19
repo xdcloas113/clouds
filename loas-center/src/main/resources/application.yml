@@ -1,16 +1,2 @@
-#开启密码模式
-spring:
-  security:
-    user:
-      name: loas
-      password: loas
-
 server:
-  port: 8761
-
-eureka:
-  client:
-    register-with-eureka: false
-    fetch-registry: false
-  server:
-    wait-time-in-ms-when-sync-empty: 0
+  port: 9001
