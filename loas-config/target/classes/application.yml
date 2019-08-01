@@ -2,20 +2,6 @@ server:
   port: 9002
 
 
-eureka:
-  client:
-    enabled: true
-    serviceUrl:
-      defaultZone: http://loas:loas@localhost:9001/eureka/
-  instance:
-    hostname: abb
-    prefer-ip-address: true
-    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
-#    多久去拉取注册表，心跳
-    leaseRenewalIntervalInSeconds: 10
-#    等待心跳时间
-    leaseExpirationDurationInSeconds: 20
-
 # 读取git上面的config数据
 spring:
   profiles:

@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: admin-server
+  profiles:
+    active:
+      - secure
+server:
+  port: 9000
+
+---
+spring:
+  profiles: insecure
+
+---
+spring:
+  profiles: secure
+  security:
+    user:
+      name: "loas"
+      password: "loas"
+eureka:
+  instance:
+    metadata-map:
+      user.name: ${spring.security.user.name}
+      user.password: ${spring.security.user.password}
+

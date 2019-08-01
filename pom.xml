@@ -37,6 +37,7 @@
         <module>loas-center</module>
         <module>loas-config</module>
         <module>loas-gateway</module>
+        <module>loas-admin</module>
     </modules>
 
     <properties>

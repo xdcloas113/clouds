@@ -1,0 +1,26 @@
+# tag::configuration-eureka[]
+eureka:   #<1>
+  client:
+    registryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVICE_URL:http://loas:loas@localhost:9001}/eureka/
+  instance:
+     hostname: adminServer
+     prefer-ip-address: true
+     instance-id: ${spring.application.name}--->${spring.cloud.client.ip-address}:${server.port}
+#    多久去拉取注册表，心跳
+     leaseRenewalIntervalInSeconds: 10
+#    等待心跳时间
+     leaseExpirationDurationInSeconds: 20
+     health-check-url-path: /actuator/health
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"  #暴露所有的端点我们可以看到更多应用相关信息
+  endpoint:
+    health:
+      show-details: ALWAYS  #health endpoint是否必须显示全部细节
+# end::configuration-eureka[]
+

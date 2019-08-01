@@ -1,15 +1,42 @@
+eureka:
+  client:
+    registryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVICE_URL:http://loas:loas@localhost:9001}/eureka/
+  instance:
+    hostname: configServer
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}--->${spring.cloud.client.ip-address}:${server.port}
+#    多久去拉取注册表，心跳
+    leaseRenewalIntervalInSeconds: 10
+#    等待心跳时间
+    leaseExpirationDurationInSeconds: 20
+    health-check-url-path: /actuator/health
+
 spring:
   application:
     name: config-server #这里是eureka实例的applistion 的名称
-  security: #这里设置了。bootstrap里面要设置密码
-      user:
-        name: loas
-        password: loas
+#  security: #这里设置了。bootstrap里面要设置密码
+#      user:
+#        name: loas
+#        password: loas
+  boot:
+      admin:
+        client:
+          url: ${spring.cloud.client.ip-address}:9000   #指定SpringBootAdmin服务端地址
+          password: loas
+          username: loas
+          instance:
+            prefer-ip: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS
 
 
-#encrypt:
- # failOnError: false
-  #keyStore:
-   # location: classpath:keystore.jks
-    #password: ${KEYSTORE_PASSWORD:foobar} # don't use a default in production
-    #alias: test
+
