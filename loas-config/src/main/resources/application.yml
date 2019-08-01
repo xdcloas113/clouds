@@ -1,8 +1,13 @@
 server:
   port: 9002
+encrypt:
+  key: loas
+logging:
+  level:
+    com.netflix.discovery: 'ON'
+    org.springframework.cloud: 'info'
 
-
-# 读取git上面的config数据
+# 读取git上面的config数据 现在读取的是本地的配置
 spring:
   profiles:
 #    active: dev
@@ -36,11 +41,3 @@ spring:
 #  上面的url会映射{application}-{profile}.properties对应的配置文件，{label}对应git上不同的分支，默认为master
 
 
-encrypt:
-    key: loas
-
-
-logging:
-  level:
-    com.netflix.discovery: 'ON'
-    org.springframework.cloud: 'info'
