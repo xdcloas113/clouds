@@ -13,14 +13,21 @@
 
 
     <dependencies>
-    <dependency>
-        <groupId>org.springframework.cloud</groupId>
-        <artifactId>spring-cloud-starter-config</artifactId>
-    </dependency>
     <!-- 服务注册 -->
     <dependency>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+    </dependency>
+
+    <!--Spring Cloud Config 客户端依赖-->
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-config</artifactId>
+    </dependency>
+    <!-- web的依赖，必须加 -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
 
     <!--网关包-->
@@ -33,22 +40,6 @@
         <groupId>org.springframework.cloud</groupId> <!-- name has changed, before: spring-cloud-starter-zuul -->
         <artifactId>spring-cloud-starter-netflix-zuul</artifactId>
     </dependency>
-
-    <dependency>
-        <groupId>org.springframework.cloud</groupId>
-        <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
-    </dependency>
-    <!--		<dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-actuator</artifactId>
-            </dependency>-->
-
-
-
-    <!--<dependency>-->
-    <!--<groupId>org.apache.shiro</groupId>-->
-    <!--<artifactId>shiro-spring-boot-web-starter</artifactId>-->
-    <!--</dependency>-->
 
     <!--数据库操作包-->
     <dependency>
@@ -81,6 +72,23 @@
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
         <version>${lombok.ver}</version>
+    </dependency>
+
+    <!--adminClient-->
+    <dependency>
+        <groupId>de.codecentric</groupId>
+        <artifactId>spring-boot-admin-starter-client</artifactId>
+        <version>2.0.2</version>
+    </dependency>
+    <!--Spring Boot Actuator，感应服务端变化-->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+        <!-- 连接配置中心重试的依赖 -->
+    <dependency>
+        <groupId>org.springframework.retry</groupId>
+        <artifactId>spring-retry</artifactId>
     </dependency>
 
 </dependencies>
