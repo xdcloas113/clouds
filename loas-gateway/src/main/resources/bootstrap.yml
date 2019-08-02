@@ -16,7 +16,6 @@ eureka:
     metadataMap:
               user: loas
               password: loas
-#              configPath: /config-repo
 
 spring:
   cloud:
@@ -25,6 +24,9 @@ spring:
         failFast: true
         uri: http://${config.uri:localhost}:${config.port:9002}
         profile: ${config.profile:dev}  #指定的环境
+        # 读取config 配置 如何config 有密码就在这里配置 也可以在uri  账号:密码@ip:端口
+        username: loas
+        password: loas
         discovery:
           enabled: true                 #开启配置服务发现
           service-id:  config-server    #配置中心服务名

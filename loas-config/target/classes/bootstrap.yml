@@ -12,7 +12,9 @@ eureka:
     leaseRenewalIntervalInSeconds: 10
 #    等待心跳时间
     leaseExpirationDurationInSeconds: 20
-
+    metadata-map:
+        user.name: loas
+        user.password: loas
 
 spring:
   application:
@@ -26,6 +28,11 @@ spring:
           instance:
             name: config-client
             prefer-ip: true
+  security:
+      user:
+        password: loas
+        name: loas
+
 management:
   endpoints:
     web:
