@@ -10,7 +10,7 @@
     <packaging>pom</packaging>
 
     <name>cloudAll</name>
-    <description>构建的cloud模板</description>
+    <description>构建的cloud</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -34,10 +34,10 @@
 
     <!--系统模板-->
     <modules>
-        <module>loas-center</module>
-        <module>loas-config</module>
-        <module>loas-gateway</module>
-        <module>loas-admin</module>
+        <module>eureka-server</module>
+        <module>config-server</module>
+        <module>gateway-server</module>
+        <module>admin-server</module>
     </modules>
 
     <properties>

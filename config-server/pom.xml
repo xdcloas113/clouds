@@ -9,8 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>com.loas.config</artifactId>
-    <name>loas-config</name>
+    <name>config-server</name>
+    <artifactId>config-Server</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>

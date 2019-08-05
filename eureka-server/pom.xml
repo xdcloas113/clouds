@@ -8,8 +8,10 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <name>loas-center</name>
-    <artifactId>com.loas.center</artifactId>
+
+    <name>eureka-Server</name>
+    <artifactId>center-Eureka</artifactId>
+    <packaging>jar</packaging>
 
 
     <dependencies>

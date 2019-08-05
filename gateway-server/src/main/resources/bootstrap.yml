@@ -45,7 +45,7 @@ spring:
             name: Api-GatWay-Client
             prefer-ip: true
   application:
-      name: Api-GatWay #这里是eureka实例的applistion 的名称
+      name: Api-GatWay-Server #这里是eureka实例的applistion 的名称
 
 # adminClinet 暴露客户端的接口和信息
 management:
