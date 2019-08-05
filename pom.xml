@@ -38,6 +38,7 @@
         <module>config-server</module>
         <module>gateway-server</module>
         <module>admin-server</module>
+        <module>auth-server</module>
     </modules>
 
     <properties>

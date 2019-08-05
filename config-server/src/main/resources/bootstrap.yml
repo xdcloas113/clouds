@@ -1,3 +1,18 @@
+spring:
+  application:
+    name: config-server #这里是eureka实例的applistion 的名称
+  boot:
+    admin:
+      client:
+        url: ${spring.cloud.client.ip-address}:${adminServer.port:9000}   #指定SpringBootAdmin服务端地址
+        instance:
+          name: config-client
+          prefer-ip: true
+  security:
+    user:
+      password: loas
+      name: loas
+
 eureka:
   client:
     registryFetchIntervalSeconds: 5
@@ -13,25 +28,9 @@ eureka:
 #    等待心跳时间
     leaseExpirationDurationInSeconds: 20
     metadata-map:  # 这里让adminServer 知道当前的的密码
-        user.name: loas
-        user.password: loas
+        user.name: ${spring.security.user.name}
+        user.password: ${spring.security.user.password}
 
-spring:
-  application:
-    name: ${config.serviceId:config-server} #这里是eureka实例的applistion 的名称
-  boot:
-      admin:
-        client:
-          url: ${spring.cloud.client.ip-address}:${adminServer.port:9000}   #指定SpringBootAdmin服务端地址
-          password: loas
-          username: loas
-          instance:
-            name: config-client
-            prefer-ip: true
-  security:
-      user:
-        password: loas
-        name: loas
 
 management:
   endpoints:

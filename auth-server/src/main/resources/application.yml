@@ -1,0 +1,8 @@
+server:
+#  port: ${auth.port}
+  port: ${auth.port:9004}
+
+logging:
+  level:
+    org.springframework.boot: 'info'
+    org.springframework.cloud: 'info'

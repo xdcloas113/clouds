@@ -1,6 +1,6 @@
 spring:
   application:
-    name: Api-GatWay-Server #这里是eureka实例的applistion 的名称
+    name: auth-server #这里是eureka实例的applistion 的名称
   cloud:
     config:
       name: DevConfig
@@ -21,9 +21,9 @@ spring:
   boot:
     admin:
       client:
-        url: ${spring.cloud.client.ip-address}:${adminServer.port:9002}  #指定SpringBootAdmin服务端地址
+        url: ${spring.cloud.client.ip-address}:${adminServer.port:9002}   #指定SpringBootAdmin服务端地址
         instance:
-          name: Api-GatWay-Client
+          name: auth-Server-Client
           prefer-ip: true
   security:
     user:
@@ -37,9 +37,9 @@ eureka:
     serviceUrl:
       defaultZone: ${regist.eureka:http://loas:loas@localhost:9001/eureka/}
   instance:
-    hostname: ApiGatWay
+    hostname: AuthServer
     prefer-ip-address: true
-    instance-id: ${spring.application.name}--->${spring.cloud.client.ip-address}:${gateway.port:9003}
+    instance-id: ${spring.application.name}--->${spring.cloud.client.ip-address}:${auth.port:9004}
 #    多久去拉取注册表，心跳
     leaseRenewalIntervalInSeconds: 10
 #    等待心跳时间

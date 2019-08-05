@@ -6,32 +6,29 @@ logging:
     org.springframework.boot: 'info'
     org.springframework.cloud: 'info'
 
-spring:
-  datasource:
-        platform: mysql
-        type: com.alibaba.druid.pool.DruidDataSource
-        driver-class-name: com.mysql.jdbc.Driver
-        url: ${mysql.uri}
-        username: ${mysql.username}
-        password: ${mysql.password}
-        druid:
-          validationQuery: SELECT 1
-          initialSize: 10
-          minIdle: 10
-          maxActive: 200
-          minEvictableIdleTimeMillis: 180000
-          testOnBorrow: false
-          testWhileIdle: true
-          removeAbandoned: true
-          removeAbandonedTimeout: 1800
-          logAbandoned: true
-          poolPreparedStatements: true
-          maxOpenPreparedStatements: 100
-          aop-patterns: com.yqy.gateway.dao.*,com.yqy.midend.orgperm.dao.*
-  cloud:
-    discovery:
-      locator:
-        enabled: true
+#zuul:
+#  routes:
+#    client-a:
+#          path: /client/**
+#          serviceId: client-a
+#  host:
+#   connect-timeout-millis: 10000
+#   socket-timeout-millis: 60000
+#  sensitiveHeaders: ""
+
+#security:
+#  basic:
+#    enabled: false
+#  oauth2:
+#    client:
+#      access-token-uri: http://localhost:9004/uaa/oauth/token #令牌端点
+#      user-authorization-uri: http://localhost:9004/uaa/oauth/authorize #授权端点
+#      client-id: Api-GatWay-Server #OAuth2客户端ID
+#      client-secret: secret #OAuth2客户端密钥
+#    resource:
+#      jwt:
+#        key-value: springcloud123 #使用对称加密方式，默认算法为HS256
+
 #    zuul:
 #     routes:
 #        yqy-org-perm:
@@ -58,23 +55,3 @@ spring:
 #        - Path= /static/**
 #        filters:
 #        - RewritePath=/static/(?<path>.*), /$\{path}
-
-zuul:
- host:
-  connect-timeout-millis: 10000
-  socket-timeout-millis: 60000
- sensitiveHeaders: ""
- routes:
-
-
-mybatis:
-  mapper-locations: classpath:mapper/**/*.xml
-  typeAliasesPackage: com.yqy.gateway.entities
-
-hystrix:
-    command:
-        default:
-            execution:
-                isolation:
-                    thread:
-                        timeoutInMilliseconds: 60000
