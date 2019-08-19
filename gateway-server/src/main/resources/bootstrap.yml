@@ -3,25 +3,29 @@ spring:
     name: Api-GatWay-Server #这里是eureka实例的applistion 的名称
   cloud:
     config:
-      name: DevConfig
       failFast: true
-      uri: http://${config.uri:localhost}:${config.port:9002}
-      profile: ${config.profile:dev}  #指定的环境
+      name: ${spring.application.name}
+#      uri: http://${config.uri:localhost}:${port.config:9002}
+      profile: ${spring.profiles.active}
       # 读取config 配置 如何config 有密码就在这里配置 也可以在uri  账号:密码@ip:端口
       username: loas
       password: loas
       discovery:
         enabled: true                 #开启配置服务发现
-        service-id:  config-server    #配置中心服务名
+        service-id: config-server    #配置中心服务名
       retry:
         initial-interval: 1100        #首次重试间隔时间，默认1000毫秒
         multiplier: 1.1D              #下一次重试间隔时间的乘数，比如开始1000，下一次就是1000*1.1=1100
         max-interval: 2000            #最大重试时间，默认2000
         max-attempts: 3               #最大重试次数，默认6次
+  profiles:
+    active: dev
+#  main:
+#    allow-bean-definition-overriding: true
   boot:
     admin:
       client:
-        url: ${spring.cloud.client.ip-address}:${adminServer.port:9002}  #指定SpringBootAdmin服务端地址
+        url: ${spring.cloud.client.ip-address}:${port.adminServer:9002}  #指定SpringBootAdmin服务端地址
         instance:
           name: Api-GatWay-Client
           prefer-ip: true

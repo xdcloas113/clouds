@@ -1,33 +1,57 @@
 server:
-  port: ${gateway.port}
+  port: ${port.gateway}
 
 logging:
   level:
     org.springframework.boot: 'info'
     org.springframework.cloud: 'info'
 
-#zuul:
-#  routes:
-#    client-a:
-#          path: /client/**
-#          serviceId: client-a
-#  host:
-#   connect-timeout-millis: 10000
-#   socket-timeout-millis: 60000
-#  sensitiveHeaders: ""
+
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 20000
+#spring:
+#  cloud:
+#    gateway:
+#      routes:
+
+
+#ribbon:
+#  ReadTimeout: 10000
+#  ConnectTimeout: 10000
+
 
 #security:
 #  basic:
 #    enabled: false
 #  oauth2:
-#    client:
-#      access-token-uri: http://localhost:9004/uaa/oauth/token #令牌端点
-#      user-authorization-uri: http://localhost:9004/uaa/oauth/authorize #授权端点
-#      client-id: Api-GatWay-Server #OAuth2客户端ID
-#      client-secret: secret #OAuth2客户端密钥
+##    client:
+##      access-token-uri: http://localhost:9004/uaa/oauth/token #令牌端点
+##      user-authorization-uri: http://localhost:9004/uaa/oauth/authorize #授权端点
+##      client-id: Api-GatWay-Server #OAuth2客户端ID
+##      client-secret: secret #OAuth2客户端密钥
 #    resource:
 #      jwt:
-#        key-value: springcloud123 #使用对称加密方式，默认算法为HS256
+#        key-value: springcloud123 #使用对称加密方式，默认算法d为HS256
+
+#zuul:
+#  ignoredServices: '*'
+#  routes:
+#    auth-service:
+#      path: /uaa/**
+#      stripPrefix: false
+#      sensitiveHeaders:
+#    svca-service:
+#      path: /svca/**
+#      sensitiveHeaders:
+#    svcb-service:
+#      path: /svcb/**
+#      sensitiveHeaders:
 
 #    zuul:
 #     routes:

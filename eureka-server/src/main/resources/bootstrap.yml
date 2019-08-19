@@ -1,18 +1,36 @@
 spring:
-  application:
-    name: eureka-server
-#开启密码模式
   security:
     user:
-      password: loas
       name: loas
+      password: loas
+  application:
+    name: eureka-server
+  cloud:
+    config:
+      enabled: false
 
+# docker-compose部署时候 hostname 换成pig-eureka
+# 类似的 redis 使用pig-redis ,gateway 换成 pig-gateway
 eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: eureka-server
   client:
     register-with-eureka: false
     fetch-registry: false
     serviceUrl:
+#      defaultZone : http://loas:loas@${eureka.instance.hostname}:${server.port}/eureka/
       defaultZone : http://loas:loas@localhost:${server.port}/eureka/
   server:
     wait-time-in-ms-when-sync-empty: 0
+#    eviction-interval-timer-in-ms: 4000
+    enable-self-preservation: false
+    renewal-percent-threshold: 0.9
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
 

@@ -1,11 +1,12 @@
 spring:
   application:
-    name: auth-server #这里是eureka实例的applistion 的名称
+    name: client-a #这里是eureka实例的applistion 的名称
   cloud:
     config:
+      name: DevConfig
       failFast: true
-      name: ${spring.application.name}
-      profile: ${spring.profiles.active}  #指定的环境
+      uri: http://${config.uri:localhost}:${config.port:9002}
+      profile: ${config.profile:dev}  #指定的环境
       # 读取config 配置 如何config 有密码就在这里配置 也可以在uri  账号:密码@ip:端口
       username: loas
       password: loas
@@ -17,16 +18,12 @@ spring:
         multiplier: 1.1D              #下一次重试间隔时间的乘数，比如开始1000，下一次就是1000*1.1=1100
         max-interval: 2000            #最大重试时间，默认2000
         max-attempts: 3               #最大重试次数，默认6次
-  profiles:
-    active: dev
-#  main:
-#    allow-bean-definition-overriding: true
   boot:
     admin:
       client:
         url: ${spring.cloud.client.ip-address}:${adminServer.port:9002}   #指定SpringBootAdmin服务端地址
         instance:
-          name: auth-Server-Client
+          name: client-a
           prefer-ip: true
   security:
     user:
@@ -47,7 +44,7 @@ eureka:
     leaseRenewalIntervalInSeconds: 10
 #    等待心跳时间
     leaseExpirationDurationInSeconds: 20
-    health-check-url-path: /uaa/actuator/health
+    health-check-url-path: /actuator/health
     metadata-map:
       user.name: ${spring.security.user.name}
       user.password: ${spring.security.user.password}

@@ -28,15 +28,15 @@ public class AdminServerApplication {
         SpringApplication.run(AdminServerApplication.class, args);
     }
 
-    @Profile("insecure")
-    @Configuration
-    public static class SecurityPermitAllConfig extends WebSecurityConfigurerAdapter {
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http.authorizeRequests().anyRequest().permitAll()//
-                    .and().csrf().disable();
-        }
-    }
+//    @Profile("insecure")
+//    @Configuration
+//    public static class SecurityPermitAllConfig extends WebSecurityConfigurerAdapter {
+//        @Override
+//        protected void configure(HttpSecurity http) throws Exception {
+//            http.authorizeRequests().anyRequest().permitAll()//
+//                    .and().csrf().disable();
+//        }
+//    }
 
     @Profile("secure")
     @Configuration

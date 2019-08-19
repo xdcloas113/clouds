@@ -4,10 +4,12 @@ spring:
   boot:
     admin:
       client:
-        url: ${spring.cloud.client.ip-address}:${adminServer.port:9000}   #指定SpringBootAdmin服务端地址
+        url: ${spring.cloud.client.ip-address}:${port.adminServer:9000}   #指定SpringBootAdmin服务端地址
         instance:
           name: config-client
           prefer-ip: true
+#          service-base-url: ${spring.cloud.client.ip-address}:${server.port}
+
   security:
     user:
       password: loas
@@ -19,7 +21,7 @@ eureka:
     serviceUrl:
       defaultZone: ${EUREKA_SERVICE_URL:http://loas:loas@localhost:9001}/eureka/
   instance:
-    hostname: configServer
+    hostname: ${spring.application.name}
     health-check-url-path: /actuator/health   #健康检查的地址
     prefer-ip-address: true
     instance-id: ${spring.application.name}--->${spring.cloud.client.ip-address}:${server.port}

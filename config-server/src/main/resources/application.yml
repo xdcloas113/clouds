@@ -7,9 +7,20 @@ logging:
     com.netflix.discovery: 'ON'
     org.springframework.cloud: 'info'
 
-# 读取git上面的config数据 现在读取的是本地的配置
 spring:
   profiles:
+    active: native
+  # 配置中心
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/config-repo/
+  rabbitmq:
+    host: rabbitmq
+# 读取git上面的config数据 现在读取的是本地的配置
+#spring:
+#  profiles:
 #    active: dev
 #  cloud:
 #    config:
@@ -25,13 +36,13 @@ spring:
 #          timeout: 30000
 #          searchPaths: config-repo  #文件所在的地址必须要  http://localhost:8888/DevConfig-dev.properties
   ##########  读取本地的 ##########
-   active: native
-  cloud:
-    config:
-      profile: native
-      server:
-        native:  #上面都注释掉
-          searchLocations:  config-repo  #指定配置文件的位置 访问配置文件 直接 ip:port/文件名字
+#   active: native
+#  cloud:
+#    config:
+#      profile: native
+#      server:
+#        native:  #上面都注释掉
+#          searchLocations:  classpath:/config-repo/  #指定配置文件的位置 访问配置文件 直接 ip:port/文件名字
 #          searchLocations:  file:./config-repo/,file:./config-repo/{application},file:./config-repo/{application}/{profile}
 #  /{application}/{profile}[/{label}]
 #  /{application}-{profile}.yml
