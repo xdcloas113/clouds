@@ -3,8 +3,37 @@ jasypt:
   encryptor:
     password: loas #根密码
 
-# 不做限制的路由地址
-routes: /config-server/**,/auth-server/**
+#-------------- jwt----------------
+#不进行token拦截
+auth:
+  skip:
+    urls: /auth-server/auth/login, /auth-server/token/refresh,/auth-server/auth/get
+
+#token过期时间：1min
+token:
+  expire:
+    time: 60000
+#refreshToken过期时间：2min
+refresh:
+  token:
+    expire:
+      time: 120000
+
+jwt:
+#jwt生成密钥
+  secret:
+    key: asdfghjkl
+#token黑名单 存储key
+  blacklist:
+    key:
+      format: JWT_BLACKLIST::%s
+#refreshToken 存储key
+  refresh:
+    token:
+      key:
+        format: JWT_REFRESH_TOKEN::%s
+
+#----------------jwt----------------------------
 
 # 所以不能在服务开启时就读取到端口配置
 port:
@@ -14,13 +43,6 @@ port:
   gateway: 9003
   auth: 9004
 
-# 数据库
-#mysql:
-# uri: jdbc:mysql:///policy?useUnicode=true&characterEncoding=utf8&useSSL=false
-# user: root
-# passowrd: root
-# driver5: com.mysql.jdbc.Driver
-# driver8: com.mysql.cj.jdbc.Driver
 
 # Spring 相关
 spring:

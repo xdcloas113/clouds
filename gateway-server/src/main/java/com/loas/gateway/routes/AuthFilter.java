@@ -33,17 +33,16 @@ public class AuthFilter implements GlobalFilter, Ordered {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthFilter.class);
 
-    public final static String ATTRIBUTE_IGNORE_TEST_GLOBAL_FILTER = "@ignoreTestGlobalFilter";
 
-
-    @Value("${jwt.secret.key:8888}")
+    @Value("${jwt.secret.key}")
     private String secretKey;
 
-    @Value("${routes}")
+    @Value("${auth.skip.urls}")
     private String[] skipAuthUrls;
 
-    @Value("${jwt.blacklist.key.format:8888}")
+    @Value("${jwt.blacklist.key.format}")
     private String jwtBlacklistKeyFormat;
+
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
@@ -55,65 +54,41 @@ public class AuthFilter implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        System.out.println("skipAuthUrls"+skipAuthUrls.toString());
-        //跳过检测
-        if (exchange.getAttribute(ATTRIBUTE_IGNORE_TEST_GLOBAL_FILTER) != null) {
+
+        String url = exchange.getRequest().getURI().getPath();
+        //跳过不需要验证的路径
+        if(Arrays.asList(skipAuthUrls).contains(url)){
             return chain.filter(exchange);
-        } else {
-            //简单增加一个参数
-            URI uri = exchange.getRequest().getURI();
-            String query = uri.getRawQuery();
-            if (StringUtils.hasText(query)) {
-                query = query + "&throwFilter=true";
-            } else {
-                query = query + "?throwFilter=true";
-            }
-
-            URI newUri = UriComponentsBuilder.fromUri(uri)
-                    .replaceQuery(query)
-                    .build(true)
-                    .toUri();
-
-            ServerHttpRequest request = exchange.getRequest().mutate().uri(newUri).build();
-
-            return chain.filter(exchange.mutate().request(request).build());
         }
-
-//        String url = exchange.getRequest().getURI().getPath();
-//        //跳过不需要验证的路径
-//        if(Arrays.asList(skipAuthUrls).contains(url)){
-//            return chain.filter(exchange);
-//        }
-//        //从请求头中取出token
-//        String token = exchange.getRequest().getHeaders().getFirst("Authorization");
-//        //未携带token或token在黑名单内
-//        if (token == null ||
-//                token.isEmpty() ||
-//                    isBlackToken(token)) {
-//            System.out.println("??");
-//            ServerHttpResponse originalResponse = exchange.getResponse();
-//            originalResponse.setStatusCode(HttpStatus.OK);
-//            originalResponse.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
-//            byte[] response = "{\"code\": \"401\",\"msg\": \"401 Unauthorized.\"}"
-//                    .getBytes(StandardCharsets.UTF_8);
-//            DataBuffer buffer = originalResponse.bufferFactory().wrap(response);
-//            return originalResponse.writeWith(Flux.just(buffer));
-//        }
-//        //取出token包含的身份
-//        String userName = verifyJWT(token);
-//        if(userName.isEmpty()){
-//            ServerHttpResponse originalResponse = exchange.getResponse();
-//            originalResponse.setStatusCode(HttpStatus.OK);
-//            originalResponse.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
-//            byte[] response = "{\"code\": \"10002\",\"msg\": \"invalid token.\"}"
-//                    .getBytes(StandardCharsets.UTF_8);
-//            DataBuffer buffer = originalResponse.bufferFactory().wrap(response);
-//            return originalResponse.writeWith(Flux.just(buffer));
-//        }
-//        //将现在的request，添加当前身份
-//        ServerHttpRequest mutableReq = exchange.getRequest().mutate().header("Authorization-UserName", userName).build();
-//        ServerWebExchange mutableExchange = exchange.mutate().request(mutableReq).build();
-//        return chain.filter(mutableExchange);
+        //从请求头中取出token
+        String token = exchange.getRequest().getHeaders().getFirst("Authorization");
+        //未携带token或token在黑名单内
+        if (token == null ||
+                token.isEmpty() ||
+                    isBlackToken(token)) {
+            ServerHttpResponse originalResponse = exchange.getResponse();
+            originalResponse.setStatusCode(HttpStatus.OK);
+            originalResponse.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
+            byte[] response = "{\"code\": \"401\",\"msg\": \"401 没有认证哈.\"}"
+                    .getBytes(StandardCharsets.UTF_8);
+            DataBuffer buffer = originalResponse.bufferFactory().wrap(response);
+            return originalResponse.writeWith(Flux.just(buffer));
+        }
+        //取出token包含的身份
+        String userName = verifyJWT(token);
+        if(userName.isEmpty()){
+            ServerHttpResponse originalResponse = exchange.getResponse();
+            originalResponse.setStatusCode(HttpStatus.OK);
+            originalResponse.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
+            byte[] response = "{\"code\": \"10002\",\"msg\": \"无效的令牌哈.\"}"
+                    .getBytes(StandardCharsets.UTF_8);
+            DataBuffer buffer = originalResponse.bufferFactory().wrap(response);
+            return originalResponse.writeWith(Flux.just(buffer));
+        }
+        //将现在的request，添加当前身份
+        ServerHttpRequest mutableReq = exchange.getRequest().mutate().header("Authorization-UserName", userName).build();
+        ServerWebExchange mutableExchange = exchange.mutate().request(mutableReq).build();
+        return chain.filter(mutableExchange);
     }
 
     /**
