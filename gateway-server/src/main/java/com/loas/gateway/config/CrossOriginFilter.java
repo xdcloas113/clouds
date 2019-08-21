@@ -15,6 +15,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+/**
+ *  跨域的处理的gateWay的过滤器
+ */
 @Component
 public class CrossOriginFilter implements GlobalFilter, Ordered {
 

@@ -19,14 +19,12 @@ spring:
         max-attempts: 3               #最大重试次数，默认6次
   profiles:
     active: dev
-#  main:
-#    allow-bean-definition-overriding: true
   boot:
     admin:
       client:
         url: ${spring.cloud.client.ip-address}:${adminServer.port:9002}   #指定SpringBootAdmin服务端地址
         instance:
-          name: auth-Server-Client
+#          name: auth-Server-Client
           prefer-ip: true
   security:
     user:
@@ -40,24 +38,15 @@ eureka:
     serviceUrl:
       defaultZone: ${regist.eureka:http://loas:loas@localhost:9001/eureka/}
   instance:
-    hostname: AuthServer
+    hostname: ${spring.application.name}
     prefer-ip-address: true
     instance-id: ${spring.application.name}--->${spring.cloud.client.ip-address}:${auth.port:9004}
 #    多久去拉取注册表，心跳
     leaseRenewalIntervalInSeconds: 10
 #    等待心跳时间
     leaseExpirationDurationInSeconds: 20
-    health-check-url-path: /uaa/actuator/health
+    health-check-url-path: /actuator/health
     metadata-map:
       user.name: ${spring.security.user.name}
       user.password: ${spring.security.user.password}
 
-# adminClinet 暴露客户端的接口和信息
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
-  endpoint:
-    health:
-      show-details: ALWAYS

@@ -1,11 +1,10 @@
 spring:
   application:
-    name: client-a #这里是eureka实例的applistion 的名称
+    name: client-a
   cloud:
     config:
-      name: DevConfig
       failFast: true
-      uri: http://${config.uri:localhost}:${config.port:9002}
+      name: ${spring.application.name}
       profile: ${config.profile:dev}  #指定的环境
       # 读取config 配置 如何config 有密码就在这里配置 也可以在uri  账号:密码@ip:端口
       username: loas
@@ -18,12 +17,14 @@ spring:
         multiplier: 1.1D              #下一次重试间隔时间的乘数，比如开始1000，下一次就是1000*1.1=1100
         max-interval: 2000            #最大重试时间，默认2000
         max-attempts: 3               #最大重试次数，默认6次
+  profiles:
+    active: dev
   boot:
     admin:
       client:
         url: ${spring.cloud.client.ip-address}:${adminServer.port:9002}   #指定SpringBootAdmin服务端地址
         instance:
-          name: client-a
+#          name: client-a
           prefer-ip: true
   security:
     user:
@@ -48,13 +49,3 @@ eureka:
     metadata-map:
       user.name: ${spring.security.user.name}
       user.password: ${spring.security.user.password}
-
-# adminClinet 暴露客户端的接口和信息
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
-  endpoint:
-    health:
-      show-details: ALWAYS

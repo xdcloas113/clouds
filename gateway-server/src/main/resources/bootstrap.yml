@@ -1,17 +1,15 @@
 spring:
   application:
-    name: Api-GatWay-Server #这里是eureka实例的applistion 的名称
+    name: Api-GatWay-Server
   cloud:
     config:
       failFast: true
       name: ${spring.application.name}
-#      uri: http://${config.uri:localhost}:${port.config:9002}
       profile: ${spring.profiles.active}
-      # 读取config 配置 如何config 有密码就在这里配置 也可以在uri  账号:密码@ip:端口
       username: loas
       password: loas
       discovery:
-        enabled: true                 #开启配置服务发现
+        enabled: true                #开启配置服务发现
         service-id: config-server    #配置中心服务名
       retry:
         initial-interval: 1100        #首次重试间隔时间，默认1000毫秒
@@ -20,14 +18,13 @@ spring:
         max-attempts: 3               #最大重试次数，默认6次
   profiles:
     active: dev
-#  main:
-#    allow-bean-definition-overriding: true
+#    Admin客户端链接
   boot:
     admin:
       client:
         url: ${spring.cloud.client.ip-address}:${port.adminServer:9002}  #指定SpringBootAdmin服务端地址
         instance:
-          name: Api-GatWay-Client
+#          name: Api-GatWay-Client
           prefer-ip: true
   security:
     user:
@@ -53,12 +50,3 @@ eureka:
       user.name: ${spring.security.user.name}
       user.password: ${spring.security.user.password}
 
-# adminClinet 暴露客户端的接口和信息
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
-  endpoint:
-    health:
-      show-details: ALWAYS

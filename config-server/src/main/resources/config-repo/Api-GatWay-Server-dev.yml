@@ -1,44 +1,143 @@
 spring:
   cloud:
     gateway:
-      locator:
-        enabled: true
+      discovery:
+        locator:
+          enabled: true
       routes:
-        # 认证中心
         - id: auth-server
-          uri: lb://auth-server
+          uri: lb://loas:loas@auth-server
           predicates:
-            - Path=/auth/**
+          - Path=/auth-server/**
           filters:
-            # 验证码处理
-            - ValidateCodeGatewayFilter
-            # 前端密码解密
-            - PasswordDecoderFilter
-        #UPMS 模块
-        - id: pig-upms
-          uri: lb://pig-upms
+          - StripPrefix=1
+          # 验证码处理
+#          - ValidateCodeGatewayFilter
+          # 前端密码解密
+#          - PasswordDecoderFilter
+         #测试client
+        - id: chient-a
+          uri: lb://loas:loas@client-a
           predicates:
-            - Path=/admin/**
+          - Path=/chient-a/**
           filters:
-            # 限流配置
-            - name: RequestRateLimiter
-              args:
-                key-resolver: '#{@remoteAddrKeyResolver}'
-                redis-rate-limiter.replenishRate: 10
-                redis-rate-limiter.burstCapacity: 20
-              # 降级配置
-            - name: Hystrix
-              args:
-                name: default
-                fallbackUri: 'forward:/fallback'
-
-
+          - StripPrefix=1
+#        #UPMS 模块
+#        - id: pig-upms
+#          uri: lb://pig-upms
+#          predicates:
+#            - Path=/admin/**
+#          filters:
+#            # 限流配置
+#            - name: RequestRateLimiter
+#              args:
+#                key-resolver: '#{@remoteAddrKeyResolver}'
+#                redis-rate-limiter.replenishRate: 10
+#                redis-rate-limiter.burstCapacity: 20
+#              # 降级配置
+#            - name: Hystrix
+#              args:
+#                name: default
+#                fallbackUri: 'forward:/fallback'
+#
+#
 security:
   encode:
     # 前端密码密钥，必须16位
     key: 'thanks,pig4cloud'
-
 # 不校验验证码终端
 ignore:
   clients:
     - test
+
+#先保存这里做参考用的
+
+#spring:
+#  cloud:
+#    gateway:
+#      discovery:
+#        locator:
+#          enabled: true
+#      routes:
+#        - id: auth-server
+#          uri: lb://auth-server # http://localhost:9004/
+#          predicates:
+#          - Path=/auth-server/**
+#          filters:
+#          - StripPrefix=1
+#          # 验证码处理
+#          - ValidateCodeGatewayFilter
+#          # 前端密码解密
+#          - PasswordDecoderFilter
+#          - IgnoreTestGlobalFilter  #在本路由启用跳过全局过滤器
+        #UPMS 模块
+#        - id: pig-upms
+#          uri: lb://pig-upms
+#          predicates:
+#            - Path=/admin/**
+#          filters:
+#            # 限流配置
+#            - name: RequestRateLimiter
+#              args:
+#                key-resolver: '#{@remoteAddrKeyResolver}'
+#                redis-rate-limiter.replenishRate: 10
+#                redis-rate-limiter.burstCapacity: 20
+#              # 降级配置
+#            - name: Hystrix
+#              args:
+#                name: default
+#                fallbackUri: 'forward:/fallback'
+
+
+#ribbon:
+#  ReadTimeout: 10000
+#  ConnectTimeout: 10000
+
+
+#security:
+#  basic:
+#    enabled: false
+#  oauth2:
+##    client:
+##      access-token-uri: http://localhost:9004/uaa/oauth/token #令牌端点
+##      user-authorization-uri: http://localhost:9004/uaa/oauth/authorize #授权端点
+##      client-id: Api-GatWay-Server #OAuth2客户端ID
+##      client-secret: secret #OAuth2客户端密钥
+#    resource:
+#      jwt:
+#        key-value: springcloud123 #使用对称加密方式，默认算法d为HS256
+
+#zuul:
+#  ignoredServices: '*'
+#  routes:
+#    auth-service:
+#      path: /uaa/**
+#      stripPrefix: false
+#      sensitiveHeaders:
+#    svca-service:
+#      path: /svca/**
+#      sensitiveHeaders:
+#    svcb-service:
+#      path: /svcb/**
+#      sensitiveHeaders:
+
+#    gateway:
+#      routes:
+#      - id: yqy-org-perm
+#        predicates:
+#        - Path= /yqy-org-perm/**
+#        uri: lb://yqy-org-perm
+#        filters:
+#        - RewritePath=/yqy-org-perm/(?<path>.*), /$\{path}
+#      - id: yiqiyun-web
+#        uri: lb://yiqiyun-web
+#        predicates:
+#        - Path= /web/**
+#        filters:
+#        - RewritePath=/web/(?<path>.*), /$\{path}
+#      - id: web-static
+#        uri: lb://yiqiyun-web
+#        predicates:
+#        - Path= /static/**
+#        filters:
+#        - RewritePath=/static/(?<path>.*), /$\{path}

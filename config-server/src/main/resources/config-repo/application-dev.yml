@@ -3,7 +3,7 @@ jasypt:
   encryptor:
     password: loas #根密码
 
-# zuul 路由地址
+# 不做限制的路由地址
 routes: /config-server/**,/auth-server/**
 
 # 所以不能在服务开启时就读取到端口配置
@@ -15,21 +15,17 @@ port:
   auth: 9004
 
 # 数据库
-mysql:
- uri: jdbc:mysql:///policy?useUnicode=true&characterEncoding=utf8&useSSL=false
- user: root
- passowrd: root
- driver5: com.mysql.jdbc.Driver
- driver8: com.mysql.cj.jdbc.Driver
+#mysql:
+# uri: jdbc:mysql:///policy?useUnicode=true&characterEncoding=utf8&useSSL=false
+# user: root
+# passowrd: root
+# driver5: com.mysql.jdbc.Driver
+# driver8: com.mysql.cj.jdbc.Driver
 
 # Spring 相关
 spring:
   redis:
     localhost: 127.0.0.1:6379
-  # zipkin
-#  zipkin:
-#    enabled: true
-#    base-url: http://pig-zipkin
   sleuth:
     web:
       client:
@@ -39,12 +35,16 @@ spring:
       # 更改采样比率为1，就能看到所有的请求数据了，但是这样会增加接口调用延迟
       probability: 1.0
 
-# 暴露监控端点
+# adminClinet 暴露客户端的接口和信息
 management:
   endpoints:
     web:
       exposure:
         include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS
+
 
 # feign 配置
 feign:
@@ -96,8 +96,9 @@ mybatis-plus:
     map-underscore-to-camel-case: true
 
 # spring security 配置
-security:
-  oauth2:
-    resource:
-      loadBalanced: true
-      token-info-uri: http://localhost:9004/oauth/check_token
+#security:
+#  oauth2:
+#    resource:
+#      loadBalanced: true
+#      token-info-uri: http://localhost:9004/oauth/check_token
+
