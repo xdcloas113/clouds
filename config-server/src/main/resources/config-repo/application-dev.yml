@@ -3,21 +3,24 @@ jasypt:
   encryptor:
     password: loas #根密码
 
+#不进行拦截的路径
+no_filter: /chient-a/**
+
 #-------------- jwt----------------
 #不进行token拦截
 auth:
   skip:
     urls: /auth-server/auth/login, /auth-server/token/refresh,/auth-server/auth/get
 
-#token过期时间：1min
+#token过期时间：一天
 token:
   expire:
-    time: 60000
-#refreshToken过期时间：2min
+    time: 86400000
+#refreshToken过期时间：一天
 refresh:
   token:
     expire:
-      time: 120000
+      time: 86400000
 
 jwt:
 #jwt生成密钥

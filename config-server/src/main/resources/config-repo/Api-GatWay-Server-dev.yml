@@ -4,6 +4,12 @@ spring:
       discovery:
         locator:
           enabled: true
+      #熔断开启后丢走 这个方法
+      default-filters:
+        - name: Hystrix
+          args:
+            name: fallbackcmd
+            fallbackUri: forward:/fallbackcontroller
       routes:
         - id: auth-server
           uri: lb://loas:loas@auth-server
@@ -28,7 +34,7 @@ spring:
 #          predicates:
 #            - Path=/admin/**
 #          filters:
-#            # 限流配置
+            # 限流配置
 #            - name: RequestRateLimiter
 #              args:
 #                key-resolver: '#{@remoteAddrKeyResolver}'
@@ -38,8 +44,8 @@ spring:
 #            - name: Hystrix
 #              args:
 #                name: default
-#                fallbackUri: 'forward:/fallback'
-#
+#                fallbackUri: 'forward:/fallbackcontroller'
+
 #
 security:
   encode:

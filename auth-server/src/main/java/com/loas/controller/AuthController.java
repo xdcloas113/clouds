@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -20,11 +17,19 @@ public class AuthController {
     @Value("${jwt.secret.key}")
     private String secretKey;
 
-    @Value("${token.expire.time}")
     private long tokenExpireTime;
 
-    @Value("${refresh.token.expire.time}")
+    @Value("${token.expire.time}")
+    public void setTokenExpireTime(long tokenExpireTime) {
+        this.tokenExpireTime = tokenExpireTime;
+    }
+
     private long refreshTokenExpireTime;
+
+    @Value("${refresh.token.expire.time}")
+    public void setRefreshTokenExpireTime(long refreshTokenExpireTime) {
+        this.refreshTokenExpireTime = refreshTokenExpireTime;
+    }
 
     @Value("${jwt.refresh.token.key.format}")
     private String jwtRefreshTokenKeyFormat;
@@ -37,6 +42,7 @@ public class AuthController {
 
     /**
      * 登录授权，生成JWT
+     * 这里就需要查询数据库但是现在为了方便 直接admin/admin 完事
      *
      * @param userName
      * @param password

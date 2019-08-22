@@ -20,10 +20,10 @@
         </dependency>
 
         <!-- 安全认证-->
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-security</artifactId>
-            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>org.springframework.cloud</groupId>-->
+                <!--<artifactId>spring-cloud-starter-security</artifactId>-->
+            <!--</dependency>-->
             <!--<dependency>-->
                 <!--<groupId>org.springframework.cloud</groupId>-->
                 <!--<artifactId>spring-cloud-starter-oauth2</artifactId>-->

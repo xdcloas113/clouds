@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 所在包：com.loas.gateway.controller
@@ -26,4 +28,16 @@ public class TestController {
         System.out.println("1");
         return routes.toString();
     }
+
+    /**
+     * 熔断后 都进这里面来了
+     */
+    @RequestMapping(value = "/fallbackcontroller")
+    public Map<String, String> fallBackController() {
+        Map<String, String> res = new HashMap<>();
+        res.put("code", "-100");
+        res.put("data", "服务不可用");
+        return res;
+    }
+
 }

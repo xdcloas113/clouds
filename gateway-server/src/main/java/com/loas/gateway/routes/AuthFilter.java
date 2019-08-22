@@ -1,10 +1,12 @@
 package com.loas.gateway.routes;
 
+import cn.hutool.core.util.StrUtil;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.loas.gateway.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +20,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
-import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
@@ -43,6 +42,9 @@ public class AuthFilter implements GlobalFilter, Ordered {
     @Value("${jwt.blacklist.key.format}")
     private String jwtBlacklistKeyFormat;
 
+    // 不做任何拦截的服务地址比如 /a/**
+    @Value("${no_filter}")
+    private String[] no_filter;
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
@@ -56,6 +58,11 @@ public class AuthFilter implements GlobalFilter, Ordered {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
 
         String url = exchange.getRequest().getURI().getPath();
+
+        // 不做任何拦截的服务地址比如 /a/**,, 截取第一个/xxx/ 之间的所有就可以放行
+        if (StringUtil.isContains(no_filter,StrUtil.subBetween(url,"/","/"))) {
+            return chain.filter(exchange);
+        }
         //跳过不需要验证的路径
         if(Arrays.asList(skipAuthUrls).contains(url)){
             return chain.filter(exchange);
@@ -80,7 +87,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
             ServerHttpResponse originalResponse = exchange.getResponse();
             originalResponse.setStatusCode(HttpStatus.OK);
             originalResponse.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
-            byte[] response = "{\"code\": \"10002\",\"msg\": \"无效的令牌哈.\"}"
+            byte[] response = "{\"code\": \"403\",\"msg\": \"403无效的令牌哈.\"}"
                     .getBytes(StandardCharsets.UTF_8);
             DataBuffer buffer = originalResponse.bufferFactory().wrap(response);
             return originalResponse.writeWith(Flux.just(buffer));
