@@ -4,7 +4,7 @@ jasypt:
     password: loas #根密码
 
 #不进行拦截的路径
-no_filter: /chient-a/**
+no_filter: /client-a/**
 
 #-------------- jwt----------------
 #不进行token拦截
