@@ -16,17 +16,12 @@ spring:
       server:
         native:
           search-locations: classpath:/config-repo/
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
+#  rabbitmq:
+#    host: localhost
+#    port: 5672
+#    username: guest
+#    password: guest
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
 
 # 读取git上面的config数据 现在读取的是本地的配置
 #spring:

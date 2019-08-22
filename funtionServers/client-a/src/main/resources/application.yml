@@ -6,10 +6,10 @@ logging:
     org.springframework.boot: 'info'
     org.springframework.cloud: 'info'
 
-
-spring:
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
+#
+#spring:
+#  rabbitmq:
+#    host: localhost
+#    port: 5672
+#    username: guest
+#    password: guest

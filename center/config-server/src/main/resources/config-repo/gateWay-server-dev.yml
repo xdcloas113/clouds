@@ -22,10 +22,10 @@ spring:
           # 前端密码解密
 #          - PasswordDecoderFilter
          #测试client
-        - id: chient-a
+        - id: client-a
           uri: lb://loas:loas@client-a
           predicates:
-          - Path=/chient-a/**
+          - Path=/client-a/**
           filters:
           - StripPrefix=1
 #        #UPMS 模块
