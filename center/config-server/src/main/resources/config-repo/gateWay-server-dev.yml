@@ -10,6 +10,12 @@ spring:
           args:
             name: fallbackcmd
             fallbackUri: forward:/fallbackcontroller
+      #默认 限流所有服务器，如何需要那个服务器，就配置那routes下面
+#        - name: RequestRateLimiter
+#            args:
+#              key-resolver: '#{@remoteAddrKeyResolver}'
+#              redis-rate-limiter.replenishRate: 10
+#              redis-rate-limiter.burstCapacity: 20
       routes:
         - id: auth-server
           uri: lb://loas:loas@auth-server
@@ -28,23 +34,6 @@ spring:
           - Path=/client-a/**
           filters:
           - StripPrefix=1
-#        #UPMS 模块
-#        - id: pig-upms
-#          uri: lb://pig-upms
-#          predicates:
-#            - Path=/admin/**
-#          filters:
-            # 限流配置
-#            - name: RequestRateLimiter
-#              args:
-#                key-resolver: '#{@remoteAddrKeyResolver}'
-#                redis-rate-limiter.replenishRate: 10
-#                redis-rate-limiter.burstCapacity: 20
-#              # 降级配置
-#            - name: Hystrix
-#              args:
-#                name: default
-#                fallbackUri: 'forward:/fallbackcontroller'
 
 #
 security:
