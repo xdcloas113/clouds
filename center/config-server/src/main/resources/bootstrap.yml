@@ -8,12 +8,28 @@ spring:
         instance:
           name: config-client
           prefer-ip: true
-#          service-base-url: ${spring.cloud.client.ip-address}:${server.port}
-
+          service-base-url: http://${spring.cloud.client.ip-address}:${server.port:9002}
+  profiles:
+      active: native
+    # 配置中心
+  cloud:
+    bus:
+      refresh:
+        enabled: true
+    config:
+      server:
+        native:
+#          search-locations: classpath:/config-repo/    #如果是当前工程下面就用这种方式
+          search-locations: config-repo
   security:
-    user:
-      password: loas
-      name: loas
+      user:
+        password: loas
+        name: loas
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 
 eureka:
   client:
@@ -38,7 +54,9 @@ management:
   endpoints:
     web:
       exposure:
-        include: '*'   #表示查看所有的接口
+       #表示查看所有的接口
+#        include: "*"
+        include: refresh,health
   endpoint:
     health:
       show-details: ALWAYS

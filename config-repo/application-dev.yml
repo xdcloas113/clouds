@@ -10,7 +10,7 @@ no_filter: /client-a/**
 #不进行token拦截
 auth:
   skip:
-    urls: /auth-server/auth/login, /auth-server/token/refresh,/auth-server/auth/get
+    urls: /auth-server/auth/login,/auth-server/token/refresh,/auth-server/auth/get
 
 #token过期时间：一天
 token:

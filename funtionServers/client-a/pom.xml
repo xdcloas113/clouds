@@ -67,10 +67,16 @@
             </dependency>
         <!--Spring Cloud Config 客户端依赖-->
 
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.cloud</groupId>-->
-            <!--<artifactId>spring-cloud-starter-bus-amqp</artifactId>-->
-        <!--</dependency>-->
+        <!--rabbitMq bus 用于动态拿取config数据-->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-stream-rabbit</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-bus-amqp</artifactId>
+            </dependency>
+        <!--rabbitMq bus 用于动态拿取config数据-->
 
     </dependencies>
 

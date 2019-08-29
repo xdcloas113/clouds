@@ -1,7 +1,22 @@
 spring:
   application:
     name: auth-server #这里是eureka实例的applistion 的名称
+  profiles:
+    active: dev
+#    adminClient客户端
+  boot:
+    admin:
+      client:
+        url: ${spring.cloud.client.ip-address}:${adminServer.port:9002}   #指定SpringBootAdmin服务端地址
+        instance:
+          name: auth-Server-Client
+          prefer-ip: true
+          service-base-url: http://${spring.cloud.client.ip-address}:${server.port:9004}
   cloud:
+    #开启springBus
+    bus:
+      refresh:
+         enabled: true
     config:
       failFast: true
       name: ${spring.application.name}
@@ -17,19 +32,16 @@ spring:
         multiplier: 1.1D              #下一次重试间隔时间的乘数，比如开始1000，下一次就是1000*1.1=1100
         max-interval: 2000            #最大重试时间，默认2000
         max-attempts: 3               #最大重试次数，默认6次
-  profiles:
-    active: dev
-  boot:
-    admin:
-      client:
-        url: ${spring.cloud.client.ip-address}:${adminServer.port:9002}   #指定SpringBootAdmin服务端地址
-        instance:
-#          name: auth-Server-Client
-          prefer-ip: true
   security:
     user:
       password: loas
       name: loas
+  #rabbitMq登录
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 
 eureka:
   client:

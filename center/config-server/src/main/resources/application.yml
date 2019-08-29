@@ -7,21 +7,6 @@ logging:
     com.netflix.discovery: 'ON'
     org.springframework.cloud: 'info'
 
-spring:
-  profiles:
-    active: native
-  # 配置中心
-  cloud:
-    config:
-      server:
-        native:
-          search-locations: classpath:/config-repo/
-#  rabbitmq:
-#    host: localhost
-#    port: 5672
-#    username: guest
-#    password: guest
-
 
 # 读取git上面的config数据 现在读取的是本地的配置
 #spring:
