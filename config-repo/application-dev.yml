@@ -51,6 +51,12 @@ port:
 spring:
   redis:
     localhost: 127.0.0.1:6379
+    database: 8
+    jedis:
+      pool:
+        max-active: 10
+        max-wait: -1ms
+        max-idle: 8
   sleuth:
     web:
       client:
