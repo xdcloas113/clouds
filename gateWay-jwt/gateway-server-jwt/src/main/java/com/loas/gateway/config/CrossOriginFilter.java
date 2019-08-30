@@ -39,7 +39,6 @@ public class CrossOriginFilter implements GlobalFilter, Ordered {
         headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "*");
         headers.add(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, ALL);
         headers.add(HttpHeaders.ACCESS_CONTROL_MAX_AGE, MAX_AGE);
-        headers.add("NiuPI","niuPPP");
 //        logger.info("跨域解决添加headers:{}",headers);
         if (request.getMethod() == HttpMethod.OPTIONS) {
             response.setStatusCode(HttpStatus.OK);

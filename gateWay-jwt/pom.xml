@@ -9,13 +9,13 @@
 	</parent>
 
 	<groupId>com.laoxu.gateWay</groupId>
-	<artifactId>gateWay</artifactId>
+	<artifactId>gateWay-jwt</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<!--模块-->
 	<modules>
-		<module>gateway-server</module>
-		<module>auth-server</module>
+		<module>gateway-server-jwt</module>
+		<module>auth-server-jwt</module>
 	</modules>
 </project>

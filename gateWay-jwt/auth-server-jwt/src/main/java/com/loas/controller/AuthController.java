@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -60,20 +61,22 @@ public class AuthController {
             //生成JWT
             String token = buildJWT(userName);
             //生成refreshToken
-            String refreshToken = UUID.randomUUID().toString().replaceAll("-", "");
+//            String refreshToken = UUID.randomUUID().toString().replaceAll("-", "");
             //保存refreshToken至redis，使用hash结构保存使用中的token以及用户标识
-            String refreshTokenKey = String.format(jwtRefreshTokenKeyFormat, refreshToken);
-            stringRedisTemplate.opsForHash().put(refreshTokenKey,
-                    "token", token);
-            stringRedisTemplate.opsForHash().put(refreshTokenKey,
-                    "userName", userName);
+//            String refreshTokenKey = String.format(jwtRefreshTokenKeyFormat, refreshToken);
+
+            String refreshTokenKey = String.format(jwtRefreshTokenKeyFormat, userName);
+//            System.out.println("刷新token-key:-->>>" + refreshTokenKey);
+            // 保存token到redis
+            stringRedisTemplate.opsForHash().put(refreshTokenKey, "token", token);
+            // 保存userName 到redis
+            stringRedisTemplate.opsForHash().put(refreshTokenKey, "userName", userName);
             //refreshToken设置过期时间
-            stringRedisTemplate.expire(refreshTokenKey,
-                    refreshTokenExpireTime, TimeUnit.MILLISECONDS);
+            stringRedisTemplate.expire(refreshTokenKey, refreshTokenExpireTime, TimeUnit.MILLISECONDS);
             //返回结果
             Map<String, Object> dataMap = new HashMap<>();
             dataMap.put("token", token);
-            dataMap.put("refreshToken", refreshToken);
+            dataMap.put("refreshToken", refreshTokenKey);
             resultMap.put("code", "10000");
             resultMap.put("data", dataMap);
             return resultMap;
@@ -81,6 +84,25 @@ public class AuthController {
         resultMap.put("isSuccess", false);
         return resultMap;
     }
+
+    /**
+     * 退出
+     */
+    @PostMapping("/auth/logout")
+    @ResponseBody
+    public Map<String, Object> logout (HttpServletRequest request) {
+        String jwtKey = request.getHeader("jwtKey");
+        Boolean delete1 = stringRedisTemplate.delete(jwtKey);
+        Map<String, Object> resultMap = new HashMap<>();
+        if (!delete1) {
+            resultMap.put("status","406");
+            resultMap.put("msg","退出失败");
+        }
+        resultMap.put("status","200");
+        resultMap.put("msg","已登出");
+        return resultMap;
+    }
+
 
     /**
      * 刷新JWT
@@ -92,9 +114,9 @@ public class AuthController {
     @ResponseBody
     public Map<String, Object> refreshToken(@RequestParam("refreshToken") String refreshToken) {
         Map<String, Object> resultMap = new HashMap<>();
-        String refreshTokenKey = String.format(jwtRefreshTokenKeyFormat, refreshToken);
-        String userName = (String) stringRedisTemplate.opsForHash().get(refreshTokenKey,
-                "userName");
+//        String refreshTokenKey = String.format(jwtRefreshTokenKeyFormat, refreshToken);
+        String refreshTokenKey = refreshToken;
+        String userName = (String) stringRedisTemplate.opsForHash().get(refreshTokenKey, "userName");
         if (StringUtils.isBlank(userName)) {
             resultMap.put("code", "10001");
             resultMap.put("msg", "refreshToken过期");
@@ -102,11 +124,10 @@ public class AuthController {
         }
         String newToken = buildJWT(userName);
         //替换当前token，并将旧token添加到黑名单
-        String oldToken = (String) stringRedisTemplate.opsForHash().get(refreshTokenKey,
-                "token");
+        String oldToken = (String) stringRedisTemplate.opsForHash().get(refreshTokenKey, "token");
         stringRedisTemplate.opsForHash().put(refreshTokenKey, "token", newToken);
         stringRedisTemplate.opsForValue().set(String.format(jwtBlacklistKeyFormat, oldToken), "",
-                tokenExpireTime, TimeUnit.MILLISECONDS);
+                10000, TimeUnit.MILLISECONDS);
         //生成refreshToken
         resultMap.put("code", "10000");
         resultMap.put("data", newToken);
@@ -136,7 +157,6 @@ public class AuthController {
     @RequestMapping("/auth/get1")
     @ResponseBody
     public String getIndex2 () {
-        System.out.println("这里是要认证了才能进入");
         return "需要认证才看的到";
     }
 

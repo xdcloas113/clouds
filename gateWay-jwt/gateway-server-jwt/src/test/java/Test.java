@@ -1,5 +1,7 @@
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,6 +17,18 @@ import java.util.List;
 public class Test {
 
     public static void main(String[] args) {
+        StringRedisTemplate stringRedisTemplate = new StringRedisTemplate();
+
+//        test1();
+        String re = "JWT_REFRESH_TOKEN::%s";
+        String token= "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJNSU5HIiwiZXhwIjoxNTY3MjE1NDI0LCJ1c2VyTmFtZSI6ImFkbWluIiwiaWF0IjoxNTY3MTI5MDI0fQ.2kRHdmC3IdtysBQEsl2ZyXt195Uvs2N_e797wZnzTDM";
+        String format = String.format(re, token);
+        Boolean aBoolean = stringRedisTemplate.hasKey(format);
+        System.out.println(aBoolean);
+    }
+
+
+    public static void test1 () {
         String[] no_filter = new String [2];
         no_filter[0] = "/chient-a/**";
         no_filter[1] = "/chient-c/**";
@@ -28,7 +42,6 @@ public class Test {
             System.out.println("我去");
         }
     }
-
 
     public static boolean contains(String[] array, String value) {
         return indexOf(array, value) > -1;

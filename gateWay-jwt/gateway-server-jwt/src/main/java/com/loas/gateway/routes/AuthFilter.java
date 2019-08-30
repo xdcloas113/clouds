@@ -26,6 +26,7 @@ import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class AuthFilter implements GlobalFilter, Ordered {
@@ -45,6 +46,10 @@ public class AuthFilter implements GlobalFilter, Ordered {
     // 不做任何拦截的服务地址比如 /a/**
     @Value("${no_filter}")
     private String[] no_filter;
+
+    @Value("${jwt.refresh.token.key.format}")
+    private String jwtRefreshTokenKeyFormat;
+
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
@@ -69,6 +74,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
         }
         //从请求头中取出token
         String token = exchange.getRequest().getHeaders().getFirst("Authorization");
+        String jwtKey = exchange.getRequest().getHeaders().getFirst("jwtKey");
         //未携带token或token在黑名单内
         if (token == null ||
                 token.isEmpty() ||
@@ -87,7 +93,18 @@ public class AuthFilter implements GlobalFilter, Ordered {
             ServerHttpResponse originalResponse = exchange.getResponse();
             originalResponse.setStatusCode(HttpStatus.OK);
             originalResponse.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
-            byte[] response = "{\"code\": \"403\",\"msg\": \"403无效的令牌哈.\"}"
+            byte[] response = "{\"code\": \"403\",\"msg\": \"403无效的令牌.\"}"
+                    .getBytes(StandardCharsets.UTF_8);
+            DataBuffer buffer = originalResponse.bufferFactory().wrap(response);
+            return originalResponse.writeWith(Flux.just(buffer));
+        }
+        boolean token1 = isToken(token,jwtKey);
+        System.out.println(token1);
+        if (!isToken(token,jwtKey)) {
+            ServerHttpResponse originalResponse = exchange.getResponse();
+            originalResponse.setStatusCode(HttpStatus.OK);
+            originalResponse.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
+            byte[] response = "{\"code\": \"403\",\"msg\": \"token已经失效！\"}"
                     .getBytes(StandardCharsets.UTF_8);
             DataBuffer buffer = originalResponse.bufferFactory().wrap(response);
             return originalResponse.writeWith(Flux.just(buffer));
@@ -126,6 +143,20 @@ public class AuthFilter implements GlobalFilter, Ordered {
      */
     private boolean isBlackToken(String token){
         assert token != null;
-        return stringRedisTemplate.hasKey(String.format(jwtBlacklistKeyFormat, token));
+        String format = String.format(jwtBlacklistKeyFormat, token);
+        Boolean aBoolean = stringRedisTemplate.hasKey(format);
+        return aBoolean;
+    }
+
+    /**
+     * 判断token是否存在
+     * @param token
+     * @return
+     */
+    private boolean isToken(String token,String jwtKey){
+        assert token != null;
+        // 获取redis hash key
+        String token1 =(String) stringRedisTemplate.opsForHash().get(jwtKey, "token");
+        return token.equals(token1);
     }
 }

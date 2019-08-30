@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <name>gateway-server</name>
-    <artifactId>gateway-Server</artifactId>
+    <artifactId>gateway-Server-jwt</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>

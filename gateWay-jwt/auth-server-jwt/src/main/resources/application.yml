@@ -1,7 +1,5 @@
 server:
   port: ${auth.port:9004}
-#  servlet:
-#    contextPath: /uaa #web基路径
 
 logging:
   level:
