@@ -18,7 +18,7 @@ spring:
 #              redis-rate-limiter.burstCapacity: 20
       routes:
         - id: auth-server
-          uri: lb://loas:loas@auth-server
+          uri: lb://loas:loas@auth-server-jwt
           predicates:
           - Path=/auth-server/**
           filters:

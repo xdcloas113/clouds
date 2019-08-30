@@ -9,23 +9,32 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.loas.gateway.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.codec.ServerCodecConfigurer;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.result.view.ViewResolver;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -159,4 +168,25 @@ public class AuthFilter implements GlobalFilter, Ordered {
         String token1 =(String) stringRedisTemplate.opsForHash().get(jwtKey, "token");
         return token.equals(token1);
     }
+
+//    /**
+//     *  exception-->JsonExceptionHandler2 配合使用
+//     * 自定义异常处理[@@]注册Bean时依赖的Bean，会从容器中直接获取，所以直接注入即可
+//     * @param viewResolversProvider
+//     * @param serverCodecConfigurer
+//     * @return
+//     */
+//    @Primary
+//    @Bean
+//    @Order(Ordered.HIGHEST_PRECEDENCE)
+//    public ErrorWebExceptionHandler errorWebExceptionHandler(ObjectProvider<List<ViewResolver>> viewResolversProvider,
+//                                                             ServerCodecConfigurer serverCodecConfigurer) {
+//
+//        JsonExceptionHandler2 jsonExceptionHandler = new JsonExceptionHandler2();
+//        jsonExceptionHandler.setViewResolvers(viewResolversProvider.getIfAvailable(Collections::emptyList));
+//        jsonExceptionHandler.setMessageWriters(serverCodecConfigurer.getWriters());
+//        jsonExceptionHandler.setMessageReaders(serverCodecConfigurer.getReaders());
+//        System.out.println("Init Json Exception Handler Instead Default ErrorWebExceptionHandler Success");
+//        return jsonExceptionHandler;
+//    }
 }
