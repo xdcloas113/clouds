@@ -37,6 +37,7 @@
         <module>center</module>
         <module>funtionServers</module>
         <module>gateWay-jwt</module>
+        <module>gateWay-oauth</module>
     </modules>
 
     <properties>

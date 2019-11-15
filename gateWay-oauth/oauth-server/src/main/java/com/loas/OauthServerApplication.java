@@ -28,7 +28,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 @EnableEurekaClient
 //@EnableResourceServer
 //public class clientApplication extends ResourceServerConfigurerAdapter {
-public class clientApplication {
+public class OauthServerApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(OauthServerApplication.class,args);
